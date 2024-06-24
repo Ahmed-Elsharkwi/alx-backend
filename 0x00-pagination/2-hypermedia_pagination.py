@@ -46,9 +46,10 @@ class Server:
         page_siz = len(data)
         total_pages = round(len(self.dataset()) / page_size)
         next_page = page + 1
-
+        """
         if page_siz == 0:
             total_pages += 1
+        """
         if next_page > total_pages:
             next_page = None
 
