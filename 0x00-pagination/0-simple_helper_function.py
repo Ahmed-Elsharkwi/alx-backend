@@ -5,8 +5,8 @@ get the first index and the last index of the page
 
 
 def index_range(page: int, page_size: int) -> tuple:
-    """ 
-    function named index_range that takes 
+    """
+    function named index_range that takes
     two integer arguments page and page_size
     """
     start_index = (page - 1) * page_size
