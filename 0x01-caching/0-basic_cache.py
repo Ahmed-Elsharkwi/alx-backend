@@ -2,7 +2,7 @@
 """
 module
 """
-import BaseCaching from base_caching
+from base_caching import BaseCaching
 
 
 class BasicCache(BaseCaching):
@@ -17,7 +17,7 @@ class BasicCache(BaseCaching):
 
     def get(self, key):
         """ return the value in the dicionary """
-        if key is None key not in self.cache_data:
+        if key is None or key not in self.cache_data:
             return None
         else:
             return self.cache_data[key]
