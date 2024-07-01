@@ -1,33 +1,38 @@
-#!/usr/bin/python3
-''' MRC Caching '''
+#!/usr/bin/env python3
+"""
+BasicCache class
+"""
 from base_caching import BaseCaching
 
 
 class MRUCache(BaseCaching):
-    ''' A caching system that folow MRU algorithm '''
-    elements_key = []  # Sorted by most used
+    """
+    class FIFOCache that inherits from BaseCaching and is a caching system
+    """
 
     def put(self, key, item):
-        ''' Assigns key to it's item in the chache dict
-            if data is more than the max_limit we pop
-            we discard the Most recently used element '''
+        """ put some items in the dictionary """
         if key is not None and item is not None:
-            if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
-                discard_element = ''
-                if key not in list(self.cache_data.keys()):
-                    discard_element = MRUCache.elements_key.pop(0)
-                    del self.cache_data[discard_element]
-                    print("DISCARD:", discard_element)
-                else:
-                    MRUCache.elements_key.remove(key)
-            MRUCache.elements_key.insert(0, key)
+            length = len(self.cache_data)
+            if length == BaseCaching.MAX_ITEMS:
+                count = 0
+                for key_1 in self.cache_data:
+                    if key != key_1:
+                        if count == (length - 1):
+                            print(f"DISCARD: {key_1}")
+                            del self.cache_data[key_1]
+                            break
+                    else:
+                        break
+                    count += 1
             self.cache_data[key] = item
 
     def get(self, key):
-        ''' Gets a certain item by it's key and adds them in the
-        end of the list as the were recently used '''
-        value = self.cache_data.get(key, None)
-        if value is not None:
-            MRUCache.elements_key.remove(key)
-            MRUCache.elements_key.insert(0, key)
-        return value
+        """ return the value in the dicionary """
+        if key is None or key not in self.cache_data:
+            return None
+        else:
+            value = self.cache_data[key]
+            del self.cache_data[key]
+            self.cache_data[key] = value
+            return value
