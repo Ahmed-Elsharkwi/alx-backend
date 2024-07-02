@@ -3,7 +3,7 @@
 from typing import Dict, Union
 from flask_babel import Babel
 from flask import Flask, render_template, request, g
-
+import pytz
 
 users = {
     1: {"name": "Balou", "locale": "fr", "timezone": "Europe/Paris"},
@@ -43,6 +43,23 @@ def get_locale() -> str:
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
+@babel.timezoneselector
+def get_timezone() -> str:
+    """ get the time """
+    try:
+        one = request.args.get('timezone')
+        if one is not None:
+            return pytz.timezone(one).zone
+
+        user = get_user()
+        if user is not None:
+            return pytz.timezone(user["timezone"]).zone
+
+    except pytz.exceptions.UnknownTimeZoneError:
+        return request.accept_languages.best_match(app.config[
+            'BABEL_DEFAULT_TIMEZONE'])
+
+
 def get_user() -> Union[Dict, None]:
     """ get the user info """
     user_id = request.args.get('login_as')
@@ -65,7 +82,7 @@ def before_request() -> None:
 def get_index() -> str:
     """The home/index page.
     """
-    return render_template('6-index.html')
+    return render_template('7-index.html')
 
 
 if __name__ == '__main__':
