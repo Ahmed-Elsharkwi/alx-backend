@@ -1,19 +1,22 @@
 #!/usr/bin/env python3
-""" module flask """
+"""A Basic Flask app.
+"""
 from flask_babel import Babel
 from flask import Flask, render_template
 
 
 class Config:
-    """ configuration file """
+    """Represents a Flask Babel configuration.
+    """
     LANGUAGES = ["en", "fr"]
+    BABEL_DEFAULT_LOCALE = "en"
+    BABEL_DEFAULT_TIMEZONE = "UTC"
 
 
 app = Flask(__name__)
-babel = Babel(app)
 app.config.from_object(Config)
-app.config['BABEL_DEFAULT_LOCALE'] = 'en'
-app.config['BABEL_DEFAULT_TIMEZONE'] = 'UTC'
+app.url_map.strict_slashes = False
+babel = Babel(app)
 
 
 @app.route('/')
