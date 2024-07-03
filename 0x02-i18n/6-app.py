@@ -22,10 +22,10 @@ class Config:
 
 app = Flask(__name__)
 app.config.from_object(Config)
-babel = Babel(app)
+#babel = Babel(app)
 
 
-@babel.localeselector
+#@babel.localeselector
 def get_locale() -> str:
     """ get locale """
     locale = request.args.get('locale')
@@ -58,8 +58,13 @@ def before_request() -> None:
     """ function which will be executed before all functions
     """
     res = get_user()
-    g.user = res["name"]
+    if res is not None:
+        g.user = res["name"]
+    else:
+        g.user = None
 
+
+babel = Babel(app, locale_selector=get_locale)
 
 @app.route('/')
 def get_index() -> str:
